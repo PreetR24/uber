@@ -1,20 +1,23 @@
-const userModel = require('../models/user.model');
-const userService = require('../services/user.service');
+const captainModel = require('../models/captain.model');
+const captainService = require('../services/captain.service');
 const { validationResult } = require('express-validator');
 const blacklistTokenModel = require('../models/blacklistToken.model');
 const OTP = require('../models/OTP');
 const { sendEmail } = require('../utils/sendEmail');
 
-module.exports.registerUser = async(req, res, next) => {
+module.exports.registerCaptain = async(req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
     const { email } = req.body;
+    console.log("hey");
+    
     try {
-        const userExists = await userModel.findOne({ email });
-        if (userExists) {
-            return res.status(400).json({ message: 'User already exists' });
+        console.log(email);
+        const captainExists = await captainModel.findOne({ email });
+        if (captainExists) {
+            return res.status(400).json({ message: 'Captain already exists' });
         }
         res.cookie('email', email, {
             httpOnly: true,    // Prevent client-side JS access to the cookie
@@ -41,8 +44,8 @@ module.exports.SendOTPForRegister = async(req, res, next) => {
         const mailOptions = {
             from: process.env.EMAIL,
             to: email,
-            subject: 'OTP for email verification of Uber Account',
-            text: `Your OTP is ${otp}, valid for 1 minutes`
+            subject: 'OTP for email verification of Uber Account for Captain registration',
+            text: `Your OTP is ${otp}, valid for 5 minutes`
         };
         await sendEmail(mailOptions);
         const expiresAt = new Date(Date.now() + 1 * 60 * 1000);
@@ -73,28 +76,37 @@ module.exports.VerifyOTP = async(req, res, next) => {
     }
 }       
 
-module.exports.EnterUserDetails = async(req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+module.exports.EnterCaptainDetails = async(req, res, next) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            console.log(errors);
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const { firstname, lastname, email, password, model, plate, capacity, vehicleType } = req.body;
+    
+        const hashedPassword = await captainModel.hashPassword(password);
+    
+        const captain = await captainService.createCaptain({
+            firstname,
+            lastname,
+            email,
+            password: hashedPassword,
+            model,
+            plate,
+            capacity,
+            vehicleType
+        })
+    
+        const token = captain.generateAuthToken();
+        res.clearCookie('email');
+        return res.status(201).json({ token, captain });
+    } catch (error) {
+        console.log(error);
     }
-    const { firstname, lastname, password, email } = req.body;
-
-    const hashedPassword = await userModel.hashPassword(password);
-
-    const user = await userService.createUser({
-        firstname,
-        lastname,
-        email,
-        password: hashedPassword
-    })
-
-    const token = user.generateAuthToken();
-    res.clearCookie('email');
-    return res.status(201).json({ token, user });
 }
 
-module.exports.loginUser = async(req, res, next) => {
+module.exports.loginCaptain = async(req, res, next) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -102,24 +114,24 @@ module.exports.loginUser = async(req, res, next) => {
         }
         const { email, password } = req.body;
 
-        const user = await userModel.findOne({ email }).select('+password');
-        if (!user) {
-            return res.status(404).send({ message: 'User not found' });
+        const captain = await captainModel.findOne({ email }).select('+password');
+        if (!captain) {
+            return res.status(400).json({ error: 'Captain does not exist' });
         }
 
-        const isMatch = await user.comparePassword(password);
+        const isMatch = await captain.comparePassword(password);
         if (!isMatch) {
-            return res.status(401).send({ message: 'Invalid password' });
+            return res.status(400).json({ error: 'Invalid password' });
         }
 
-        const token = user.generateAuthToken();
+        const token = captain.generateAuthToken();
         res.cookie('token', token);
-        return res.status(201).json({ token, user });
+        res.status(200).json({ token, captain });
     } catch (error) {
-        console.error(error);
-        res.status(500).send({ message: 'An error occurred', error: error.message });
+        res.status(400).json({ message: 'An error occurred', error: error.message });
     }
 }
+
 
 module.exports.SendOtpForLogin = async(req, res, next) => {
     const errors = validationResult(req);
@@ -129,16 +141,16 @@ module.exports.SendOtpForLogin = async(req, res, next) => {
 
     const { email } = req.body;
     try {
-        const userExists = await userModel.findOne({ email });
-        if (!userExists) {
-            return res.status(401).json({ message: 'User does not exists' });
+        const captainExists = await captainModel.findOne({ email });
+        if (!captainExists) {
+            return res.status(401).json({ message: 'Captain does not exists' });
         }
         await OTP.deleteOne({ email });
         const otp = Math.floor(1000 + Math.random() * 9000);
         const mailOptions = {
             from: process.env.EMAIL,
             to: email,
-            subject: 'OTP for password reset of Uber Account',
+            subject: 'OTP for password reset of Uber Account for captain',
             text: `Your OTP is ${otp}, valid for 5 minutes`
         };
         await sendEmail(mailOptions);
@@ -155,16 +167,15 @@ module.exports.SendOtpForLogin = async(req, res, next) => {
 module.exports.SetPassword = async(req, res, next) => {
     const { email, password } = req.body;
     try {
-        const user = await userModel.findOne({ email });  // Find user by email
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
+        const captain = await captainModel.findOne({ email });  // Find user by email
+        if (!captain) {
+            return res.status(404).json({ message: "Captain not found" });
         }
 
-        // Hash password before saving it
-        const hashedPassword = await userModel.hashPassword(password);
+        const hashedPassword = await captainModel.hashPassword(password);
 
         // Update only the password
-        await userModel.findOneAndUpdate({ email }, { password: hashedPassword }, { new: true });
+        await captainModel.findOneAndUpdate({ email }, { password: hashedPassword }, { new: true });
 
         return res.status(200).json({ message: 'Password updated successfully' });
     } catch (err) {
@@ -173,11 +184,11 @@ module.exports.SetPassword = async(req, res, next) => {
     }
 }
 
-module.exports.getUserProfile = async(req, res, next) => {
-    res.status(200).json(req.user);
+module.exports.getCaptainProfile = async (req, res, next) => {
+    res.status(200).json({ captain: req.captain });
 }
 
-module.exports.logoutUser = async(req, res, next) => {
+module.exports.logoutCaptain = async (req, res, next) => {
     res.clearCookie('token');
     const token = req.cookies.token || req.headers.authorization.split(' ')[ 1 ];
     await blacklistTokenModel.create({ token });
