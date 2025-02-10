@@ -5,7 +5,7 @@ const blacklistTokenModel = require('../models/blacklistToken.model');
 const captainModel = require('../models/captain.model');
 
 module.exports.authUser = async(req, res, next) => {
-    const token = req.cookies.token || req.headers.authorization?.split(' ')[ 1 ];
+    const token = req.cookies.userToken || req.headers.authorization?.split(' ')[ 1 ];
     if(!token){
         return res.status(401).json({message: 'Unauthorized'});
     }
@@ -21,12 +21,13 @@ module.exports.authUser = async(req, res, next) => {
         req.user = user;
         return next();
     }catch(err){
+        console.log(err)
         return res.status(401).json({message: 'Internal Server Error'});
     }
 }
 
 module.exports.authCaptain = async(req, res, next) => {
-    const token = req.cookies.token || req.headers.authorization?.split(' ')[ 1 ];
+    const token = req.cookies.captainToken || req.headers.authorization?.split(' ')[ 1 ];
     if(!token){
         return res.status(401).json({message: 'Unauthorized'});
     }

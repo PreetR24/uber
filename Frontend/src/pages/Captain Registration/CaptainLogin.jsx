@@ -17,12 +17,12 @@ const CaptainLogin = () => {
                 password,
             })
             const { token } = response.data;
-            localStorage.setItem('token', token);
+            localStorage.setItem("captainToken", token);
             alert('Login successful!');
             setCaptain(response.data.captain);
             navigate('/captain-home');
         } catch (err) {
-            alert(err.response?.data?.message || 'Error completing registration');
+            alert(err.response?.data?.message || 'Email or Password is incorrect');
         }
     }
 

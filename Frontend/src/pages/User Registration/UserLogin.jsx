@@ -17,7 +17,7 @@ const UserLogin = () => {
             password,
         })
         const { token } = response.data;
-        localStorage.setItem('token', token);
+        localStorage.setItem("userToken", token);
         alert('Login successful!');
         setUser(response.data.user);
         navigate('/home');

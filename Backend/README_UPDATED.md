@@ -31,6 +31,9 @@
 10. [Ride Management](#ride-management)
     - [Create Ride](#create-ride)
     - [Get Fare](#get-fare)
+    - [Confirm Ride](#confirm-ride)
+    - [Start Ride](#start-ride)
+    - [End Ride](#end-ride)
 11. [Example Request and Response](#example-request-and-response)
 
 ## User Registration Flow
@@ -383,6 +386,58 @@ Get fare estimate for a ride.
     + `auto`: Fare estimate for auto
     + `car`: Fare estimate for car
     + `motorbike`: Fare estimate for motorbike
+
+### Confirm Ride
+
+#### Description
+Confirm a ride for the captain.
+
+#### Request
+* **Method:** `POST`
+* **URL:** `/rides/confirm`
+* **Authorization:** `Bearer <JWT Token>`
+* **Request Body:**
+    + `rideId`: ID of the ride to confirm
+
+#### Response
+* **Status Code:** `200 OK`
+* **Response Body:**
+    + `message`: Ride confirmed successfully
+
+### Start Ride
+
+#### Description
+Start a ride using the ride ID and OTP.
+
+#### Request
+* **Method:** `GET`
+* **URL:** `/rides/start-ride`
+* **Authorization:** `Bearer <JWT Token>`
+* **Query Params:**
+    + `rideId`: ID of the ride to start
+    + `otp`: OTP for verification
+
+#### Response
+* **Status Code:** `200 OK`
+* **Response Body:**
+    + `message`: Ride started successfully
+
+### End Ride
+
+#### Description
+End a ride using the ride ID.
+
+#### Request
+* **Method:** `POST`
+* **URL:** `/rides/end-ride`
+* **Authorization:** `Bearer <JWT Token>`
+* **Request Body:**
+    + `rideId`: ID of the ride to end
+
+#### Response
+* **Status Code:** `200 OK`
+* **Response Body:**
+    + `message`: Ride ended successfully
 
 ## Example Request and Response
 -------------------------------

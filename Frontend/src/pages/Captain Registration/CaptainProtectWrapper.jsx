@@ -6,7 +6,7 @@ import axios from 'axios'
 const CaptainProtectWrapper = ({
     children
 }) => {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('captainToken')
     const navigate = useNavigate()
     const { captain, setCaptain } = useContext(CaptainDataContext)
     const [ isLoading, setIsLoading ] = useState(true)
@@ -26,7 +26,7 @@ const CaptainProtectWrapper = ({
                 setIsLoading(false)
             }
         }).catch(err => {
-            localStorage.removeItem('token')
+            localStorage.removeItem('captainToken')
             navigate('/captain-login')
         })
     }, [ token ])
