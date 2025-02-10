@@ -12,6 +12,7 @@ const rideRoutes = require('./routes/rides.routes');
 
 app.use(cors({
     origin: ['https://uber-client-rho.vercel.app/','http://localhost:5173'], // or your frontend domain
+    methods: ['GET','POST'],
     credentials: true, 
 }));
 app.use(express.urlencoded({ extended: true }));
