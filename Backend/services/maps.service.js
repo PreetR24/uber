@@ -73,11 +73,12 @@ module.exports.getAddressSuggestions = async (input) => {
     }
 }
 
-module.exports.getCaptainsInTheRadius = async (ltd, lng, radius) =>{
+module.exports.getCaptainsInTheRadius = async (ltd, lng, radius, vehicleType) =>{
     const captains = await captainModel.find({
         $and: [
             { "location.ltd": { $gte: ltd - 0.1, $lte: ltd + 0.1 } },
-            { "location.lng": { $gte: lng - 0.1, $lte: lng + 0.1 } }
+            { "location.lng": { $gte: lng - 0.1, $lte: lng + 0.1 } },
+            { "vehicle.vehicleType": vehicleType }
         ]
     });
     return captains;

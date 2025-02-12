@@ -44,8 +44,8 @@ const UserForgotPSD = () => {
             },
             { withCredentials: true }
         );
-        const { token } = response.data;
-        localStorage.setItem('token', token);
+        const { userToken } = response.data;
+        localStorage.setItem('userToken', userToken);
         alert('Registration successful!');
         setUser((prev) => ({ ...prev, email, password }));
         navigate('/home');   

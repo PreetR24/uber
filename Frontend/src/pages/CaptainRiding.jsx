@@ -6,7 +6,7 @@ import gsap from 'gsap'
 import LiveTracking from '../components/LiveTracking'
 
 const CaptainRiding = () => {
-
+    
     const [ finishRidePanel, setFinishRidePanel ] = useState(false)
     const finishRidePanelRef = useRef(null)
     const location = useLocation()
@@ -36,7 +36,7 @@ const CaptainRiding = () => {
                 <h5 className='p-1 text-center w-[90%] absolute top-0' onClick={() => {
                     setFinishRidePanel(true)
                 }}><i className="text-3xl text-gray-800 ri-arrow-up-wide-line cursor-pointer"></i></h5>
-                <h4 className='text-xl font-semibold'>{'4 KM away'}</h4>
+                <h4 className='text-xl font-semibold'>4 KM away</h4>
                 <button onClick={() => {
                     setFinishRidePanel(true)
                 }} className=' bg-green-600 text-white font-semibold p-3 px-10 rounded-lg'>Complete Ride</button>

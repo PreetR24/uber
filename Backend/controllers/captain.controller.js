@@ -11,7 +11,6 @@ module.exports.registerCaptain = async(req, res, next) => {
         return res.status(400).json({ errors: errors.array() });
     }
     const { email } = req.body;
-    console.log("hey");
     
     try {
         console.log(email);
@@ -98,9 +97,9 @@ module.exports.EnterCaptainDetails = async(req, res, next) => {
             vehicleType
         })
     
-        const token = captain.generateAuthToken();
+        const captainToken = captain.generateAuthToken();
         res.clearCookie('email');
-        return res.status(201).json({ token, captain });
+        return res.status(201).json({ captainToken, captain });
     } catch (error) {
         console.log(error);
     }
@@ -124,14 +123,13 @@ module.exports.loginCaptain = async(req, res, next) => {
             return res.status(400).json({ error: 'Invalid password' });
         }
 
-        const token = captain.generateAuthToken();
-        res.cookie('token', token);
-        res.status(200).json({ token, captain });
+        const captainToken = captain.generateAuthToken();
+        res.cookie('captainToken', captainToken);
+        res.status(200).json({ captainToken, captain });
     } catch (error) {
         res.status(400).json({ message: 'An error occurred', error: error.message });
     }
 }
-
 
 module.exports.SendOtpForLogin = async(req, res, next) => {
     const errors = validationResult(req);
@@ -189,8 +187,8 @@ module.exports.getCaptainProfile = async (req, res, next) => {
 }
 
 module.exports.logoutCaptain = async (req, res, next) => {
-    res.clearCookie('token');
-    const token = req.cookies.token || req.headers.authorization.split(' ')[ 1 ];
-    await blacklistTokenModel.create({ token });
+    res.clearCookie('captainToken');
+    const captainToken = req.cookies.captainToken || req.headers.authorization.split(' ')[ 1 ];
+    await blacklistTokenModel.create({ token: captainToken });
     res.status(200).json({ message: 'Logged out successfully' });
 }

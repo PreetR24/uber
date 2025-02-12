@@ -70,7 +70,7 @@ const CaptainSignup = () => {
 
             const data = response.data;
             setCaptain(data.captain);
-            localStorage.setItem('token', data.token);
+            localStorage.setItem('captainToken', data.captainToken);
             alert('Registration successful!');
             navigate('/captain-home');   
         } catch (err) {
@@ -198,58 +198,6 @@ const CaptainSignup = () => {
                 >Sign in as User</Link>
             </div>
         </div>
-        // <div className='p-7 h-screen flex flex-col justify-between'>
-        //     <div>
-        //         <img className='w-16 ml-3' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYQy-OIkA6In0fTvVwZADPmFFibjmszu2A0g&s" alt="" />
-        //         <form className='p-3' onSubmit={(e) => SubmitHandler(e)}>
-        //                 <h3 className='text-xl mt-2 mb-3'>What's your name</h3>
-        //                 <div className='flex gap-2'>
-        //                     <input
-        //                         type="text"
-        //                         required
-        //                         value={firstName}
-        //                         onChange={(e) => setFirstName(e.target.value)}
-        //                         className='bg-[#eeeeee] rounded px-4 py-2 w-1/2 border text-lg'
-        //                         placeholder='First name'
-        //                         />
-        //                     <input
-        //                         type="text"
-        //                         required 
-        //                         value={lastName}
-        //                         onChange={(e) => setLastName(e.target.value)}
-        //                         className='bg-[#eeeeee] rounded px-4 py-2 border w-1/2 text-lg'
-        //                         placeholder='Last name'
-        //                         />
-        //                 </div>
-        //                 <h3 className='text-xl mt-2 mb-4'>Enter your email</h3>
-        //                 <input
-        //                     type="email"
-        //                     required
-        //                     value={email}
-        //                     onChange={(e) => setEmail(e.target.value)}
-        //                     className='bg-[#eeeeee] rounded px-4 py-2 border w-full text-lg'
-        //                     placeholder='Enter your email'
-        //                     />
-        //                 <h3 className='text-xl mt-5 mb-4'>Enter Password</h3>
-        //                 <input
-        //                     type="password"
-        //                     required
-        //                     value={password}
-        //                     onChange={(e) => setPassword(e.target.value)}
-        //                     className='bg-[#eeeeee] rounded px-4 py-2 border w-full text-lg'
-        //                     placeholder='Enter password here'
-        //                     />
-        //                 <button className='bg-black text-white text-xl w-full font-semibold p-4 block text-center mt-4'>Create Account as a Captain</button>
-        //         </form>
-        //         <p className='text-center'>Already have an account ?<Link to='/captain-login' className='text-blue-600'> Login here</Link></p>
-        //     </div>
-        //     <div>
-        //         <Link
-        //         to='/signup'
-        //         className='bg-red-900 flex items-center justify-center text-white font-semibold mb-5 rounded-lg px-4 py-4 w-full text-xl placeholder:text-base'
-        //         >Sign in as User</Link>
-        //     </div>
-        // </div>
     )
 }
 

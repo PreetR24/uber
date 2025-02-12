@@ -185,7 +185,7 @@ const Home = () => {
             <div className='fixed p-6 top-0 flex items-center justify-between w-screen'>
                 <img className='w-16' src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png" alt="" />
                 <Link to='/users/logout' className=' h-10 w-10 bg-white flex items-center justify-center rounded-full'>
-                    <i className="text-lg font-medium ri-logout-box-r-line cursor-pointer"></i>
+                    <i className="text-lg font-medium ri-logout-box-r-line"></i>
                 </Link>
             </div>
             <div className='h-screen w-screen z-[-1] fixed top-0'>

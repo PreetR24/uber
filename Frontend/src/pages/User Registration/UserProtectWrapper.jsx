@@ -6,19 +6,19 @@ import axios from 'axios'
 const UserProtectWrapper = ({
     children
 }) => {
-    const token = localStorage.getItem('userToken')
+    const userToken = localStorage.getItem('userToken')
     const navigate = useNavigate()
     const { user, setUser } = useContext(UserDataContext)
     const [ isLoading, setIsLoading ] = useState(true)
 
     useEffect(() => {
-        if (!token) {
+        if (!userToken) {
             navigate('/login')
         }
 
         axios.get(`${import.meta.env.VITE_BASE_URL}/users/profile`, {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${userToken}`
             }
         }).then(response => {
             if (response.status === 200) {
@@ -29,7 +29,7 @@ const UserProtectWrapper = ({
             localStorage.removeItem('userToken')
             navigate('/login')
         })
-    }, [ token ])
+    }, [ userToken ])
 
     if (isLoading) {
         return (

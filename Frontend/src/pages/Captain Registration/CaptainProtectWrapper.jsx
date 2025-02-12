@@ -6,19 +6,19 @@ import axios from 'axios'
 const CaptainProtectWrapper = ({
     children
 }) => {
-    const token = localStorage.getItem('captainToken')
+    const captainToken = localStorage.getItem('captainToken')
     const navigate = useNavigate()
     const { captain, setCaptain } = useContext(CaptainDataContext)
     const [ isLoading, setIsLoading ] = useState(true)
 
     useEffect(() => {
-        if (!token) {
+        if (!captainToken) {
             navigate('/captain-login')
         }
 
         axios.get(`${import.meta.env.VITE_BASE_URL}/captains/profile`, {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${captainToken}`
             }
         }).then(response => {
             if (response.status === 200) {
@@ -29,7 +29,7 @@ const CaptainProtectWrapper = ({
             localStorage.removeItem('captainToken')
             navigate('/captain-login')
         })
-    }, [ token ])
+    }, [ captainToken ])
 
     if (isLoading) {
         return (

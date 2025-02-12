@@ -30,6 +30,7 @@ const UserSignup = () => {
     const SendOTPHandler = async (e) => {
         try {
             await axios.get(`${import.meta.env.VITE_BASE_URL}/users/signup/send-otp`, { withCredentials: true });
+            setsendotpbtn(true)
             alert('OTP sent successfully!');
         } catch (err) {
             alert(err.response?.data?.message || 'Error sending OTP');
@@ -58,8 +59,8 @@ const UserSignup = () => {
             },
             { withCredentials: true }
         );
-        const { token } = response.data;
-        localStorage.setItem('token', token);
+        const { userToken } = response.data;
+        localStorage.setItem('userToken', userToken);
         alert('Registration successful!');
         setUser({ firstName, lastName, email, password});
         navigate('/home');   
@@ -72,7 +73,7 @@ const UserSignup = () => {
         <div className='p-7 h-screen flex flex-col justify-between'>
             <div>
                 <img className='w-16 ml-3' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYQy-OIkA6In0fTvVwZADPmFFibjmszu2A0g&s" alt="" />
-                <h3 className="text-xl mb-4">Sign Up</h3>
+                <h3 className="text-xl m-2">Sign Up</h3>
                 {!OtpSent && (
                     <form onSubmit={SubmitEmailHandler}>
                         <input
@@ -94,7 +95,7 @@ const UserSignup = () => {
                             className="bg-black text-white px-4 py-2 mt-4 rounded"
                             onClick={SendOTPHandler}
                         >
-                        {sendotpbtn === true ? "Send OTP" : "Resend OTP"}
+                        {sendotpbtn === false ? "Send OTP" : "Resend OTP"}
                         </button>
                         <form onSubmit={handleVerifyOtp} className="mt-4">
                             <input

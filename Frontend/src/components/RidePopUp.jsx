@@ -2,11 +2,11 @@ import React from 'react'
 
 const RidePopUp = (props) => {
     return (
-        <div>
-            <h5 className='p-1 text-center w-[93%] absolute top-0' onClick={() => {
+        <div className='m-3'>
+            <h5 className='p-1 text-center w-[93%] absolute -mt-8' onClick={() => {
                 props.setRidePopupPanel(false)
             }}><i className="text-3xl text-gray-500 cursor-pointer ri-arrow-down-wide-line"></i></h5>
-            <h3 className='text-2xl font-semibold mb-5 text-center'>New Ride Available !</h3>
+            <h3 className='text-2xl font-semibold mt-8 text-center'>New Ride Available !</h3>
             <div className='flex items-center justify-between p-3 bg-yellow-400 rounded-lg mt-4'>
                 <div className='flex items-center gap-3 '>
                     <img className='h-12 rounded-full object-cover w-12' src="https://i.pinimg.com/236x/af/26/28/af26280b0ca305be47df0b799ed1b12b.jpg" alt="" />

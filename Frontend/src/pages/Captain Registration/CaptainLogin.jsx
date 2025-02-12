@@ -16,8 +16,8 @@ const CaptainLogin = () => {
                 email,
                 password,
             })
-            const { token } = response.data;
-            localStorage.setItem("captainToken", token);
+            const { captainToken } = response.data;
+            localStorage.setItem("captainToken", captainToken);
             alert('Login successful!');
             setCaptain(response.data.captain);
             navigate('/captain-home');

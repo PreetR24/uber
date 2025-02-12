@@ -89,9 +89,9 @@ module.exports.EnterUserDetails = async(req, res, next) => {
         password: hashedPassword
     })
 
-    const token = user.generateAuthToken();
+    const userToken = user.generateAuthToken();
     res.clearCookie('email');
-    return res.status(201).json({ token, user });
+    return res.status(201).json({ userToken, user });
 }
 
 module.exports.loginUser = async(req, res, next) => {
@@ -112,9 +112,9 @@ module.exports.loginUser = async(req, res, next) => {
             return res.status(401).send({ message: 'Invalid password' });
         }
 
-        const token = user.generateAuthToken();
-        res.cookie('token', token);
-        return res.status(201).json({ token, user });
+        const userToken = user.generateAuthToken();
+        res.cookie('userToken', userToken);
+        return res.status(201).json({ userToken, user });
     } catch (error) {
         console.error(error);
         res.status(500).send({ message: 'An error occurred', error: error.message });
@@ -178,8 +178,8 @@ module.exports.getUserProfile = async(req, res, next) => {
 }
 
 module.exports.logoutUser = async(req, res, next) => {
-    res.clearCookie('token');
-    const token = req.cookies.token || req.headers.authorization.split(' ')[ 1 ];
-    await blacklistTokenModel.create({ token });
+    res.clearCookie('userToken');
+    const userToken = req.cookies.userToken || req.headers.authorization.split(' ')[ 1 ];
+    await blacklistTokenModel.create({ token: userToken });
     res.status(200).json({ message: 'Logged out successfully' });
 }

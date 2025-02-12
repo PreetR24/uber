@@ -44,8 +44,8 @@ const CaptainForgotPSD = () => {
             },
             { withCredentials: true }
         );
-        const { token } = response.data;
-        localStorage.setItem('token', token);
+        const { captainToken } = response.data;
+        localStorage.setItem('captainToken', captainToken);
         alert('Registration successful!');
         setUser((prev) => ({ ...prev, email, password }));
         navigate('/captain-login');   

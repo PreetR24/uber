@@ -11,8 +11,8 @@ import { CaptainDataContext } from '../context/CaptainContext'
 import axios from 'axios'
 import LiveTracking from '../components/LiveTracking'
 
-const CaptainHome = () => {
-
+const CaptainHome = (props) => {
+    console.log(props)
     const [ ridePopupPanel, setRidePopupPanel ] = useState(false)
     const [ confirmRidePopupPanel, setConfirmRidePopupPanel ] = useState(false)
 
@@ -104,7 +104,7 @@ const CaptainHome = () => {
                 <div className='h-1/6'>
                     <CaptainDetails/>
                 </div>
-                <div ref={ridePopupPanelRef} className='fixed w-screen z-10 bottom-0 translate-y-full bg-white pb-3'>
+                <div ref={ridePopupPanelRef} className='fixed w-[90%] h-[45%] z-10 bottom-0 translate-y-full bg-white mb-5'>
                     <RidePopUp
                         ride={ride}
                         setRidePopupPanel={setRidePopupPanel}
@@ -112,7 +112,7 @@ const CaptainHome = () => {
                         confirmRide={confirmRide}
                         />
                 </div>
-                <div ref={confirmRidePopupPanelRef} className='fixed w-screen h-screen z-10 bottom-0 translate-y-full bg-white pb-3'>
+                <div ref={confirmRidePopupPanelRef} className='fixed w-[90%] h-[95%] z-10 bottom-0 translate-y-full bg-white pb-3'>
                     <ConfirmRidePopUp
                         ride={ride}
                         setConfirmRidePopupPanel={setConfirmRidePopupPanel}

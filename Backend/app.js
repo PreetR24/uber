@@ -9,13 +9,14 @@ const userRoutes = require('./routes/user.routes');
 const captainRoutes = require('./routes/captain.routes');
 const mapsRoutes = require('./routes/maps.routes');
 const rideRoutes = require('./routes/rides.routes');
+const helmet = require("helmet");
 
-const { initializeSocket } = require('./socket');
 const connectToDb = require('./db/db');
 
 connectToDb();
 
 const app = express();
+app.use(helmet());
 
 app.use(cors({
     origin: ['https://uber-eight-nu.vercel.app/', 'http://localhost:5173'],
