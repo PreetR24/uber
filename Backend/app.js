@@ -19,8 +19,8 @@ const app = express();
 app.use(helmet());
 
 app.use(cors({
-    origin: ['https://uber-client-rho.vercel.app/', 'http://localhost:5173'],
-    methods: ['GET', 'POST'],
+    origin: ['https://uber-client-rho.vercel.app', 'http://localhost:5173'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
