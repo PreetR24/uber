@@ -2,7 +2,7 @@ const captainModel = require('../models/captain.model');
 const captainService = require('../services/captain.service');
 const { validationResult } = require('express-validator');
 const blacklistTokenModel = require('../models/blacklistToken.model');
-const OTP = require('../models/OTP');
+const OTP = require('../models/otp');
 const { sendEmail } = require('../utils/sendEmail');
 
 module.exports.registerCaptain = async(req, res, next) => {
