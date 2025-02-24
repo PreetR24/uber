@@ -27,7 +27,7 @@ const UserForgotPSD = () => {
     const handleVerifyOtp = async (e) => {
         e.preventDefault();
         try {
-            await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login/verify-otp`, { otp }, { withCredentials: true });
+            await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login/verify-otp`, { email,otp }, { withCredentials: true });
             setVerified(true);
             alert('OTP verified successfully!');
         } catch (err) {
@@ -46,7 +46,7 @@ const UserForgotPSD = () => {
         );
         const { userToken } = response.data;
         localStorage.setItem('userToken', userToken);
-        alert('Registration successful!');
+        alert('Password Updated Successfully!');
         setUser((prev) => ({ ...prev, email, password }));
         navigate('/home');   
         } catch (err) {

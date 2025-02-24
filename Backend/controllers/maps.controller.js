@@ -17,8 +17,6 @@ module.exports.getAddressCoordinates = async (req, res) => {
 }
 
 module.exports.getDistanceTime = async (req, res) => {
-    console.log("Request received:", req.body);
-
     // Validate request body using express-validator
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

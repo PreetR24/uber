@@ -28,14 +28,13 @@ const CaptainSignup = () => {
             setOtpSent(true);
             setsendotpbtn(false);
         } catch (error) {
-            console.log(error);
             alert("Captain already exists");
         }
     };
 
     const SendOTPHandler = async (e) => {
         try {
-            await axios.get(`${import.meta.env.VITE_BASE_URL}/captains/signup/send-otp`, { withCredentials: true });
+            await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/signup/send-otp`,{ email }, { withCredentials: true });
             alert('OTP sent successfully!');
         } catch (err) {
             alert(err.response?.data?.message || 'Error sending OTP');

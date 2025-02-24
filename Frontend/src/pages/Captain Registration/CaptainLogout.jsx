@@ -14,7 +14,7 @@ const CaptainLogout = () => {
                 navigate('/captain-login');
             }
         })
-        alert("Looged out")
+        alert("Logged out")
     }, [navigate, captainToken])
 
     return (

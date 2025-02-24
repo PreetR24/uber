@@ -11,19 +11,11 @@ module.exports.registerCaptain = async(req, res, next) => {
         return res.status(400).json({ errors: errors.array() });
     }
     const { email } = req.body;
-    
     try {
-        console.log(email);
         const captainExists = await captainModel.findOne({ email });
         if (captainExists) {
             return res.status(400).json({ message: 'Captain already exists' });
         }
-        res.cookie('email', email, {
-            httpOnly: true,    // Prevent client-side JS access to the cookie
-            secure: process.env.NODE_ENV === 'production', // Secure cookie in production (requires HTTPS)
-            sameSite: 'strict', // Ensures cookie is sent only to same-origin requests
-            maxAge: 24 * 60 * 60 * 1000, // 1 day expiration time
-        });
         res.status(200).json({ message: 'Email fetched' });
     }
     catch (error) {
@@ -34,11 +26,11 @@ module.exports.registerCaptain = async(req, res, next) => {
 
 module.exports.SendOTPForRegister = async(req, res, next) => {
     try {
-        const email = req.cookies.email;
-        await OTP.deleteOne({ email });
+        const { email } = req.body;
         if(!email){
             return res.status(401).json({ message: 'Email not found' });
         }
+        await OTP.deleteOne({ email });
         const otp = Math.floor(1000 + Math.random() * 9000);
         const mailOptions = {
             from: process.env.EMAIL,
@@ -60,8 +52,7 @@ module.exports.VerifyOTP = async(req, res, next) => {
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-    const { otp } = req.body;
-    let email = req.cookies.email;
+    const { email,otp } = req.body;
     try {
         const otpExists = await OTP.findOne({ email, otp });
         if (!otpExists) {
@@ -79,7 +70,6 @@ module.exports.EnterCaptainDetails = async(req, res, next) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            console.log(errors);
             return res.status(400).json({ errors: errors.array() });
         }
         const { firstname, lastname, email, password, model, plate, capacity, vehicleType } = req.body;
@@ -98,7 +88,6 @@ module.exports.EnterCaptainDetails = async(req, res, next) => {
         })
     
         const captainToken = captain.generateAuthToken();
-        res.clearCookie('email');
         return res.status(201).json({ captainToken, captain });
     } catch (error) {
         console.log(error);
@@ -124,7 +113,6 @@ module.exports.loginCaptain = async(req, res, next) => {
         }
 
         const captainToken = captain.generateAuthToken();
-        res.cookie('captainToken', captainToken);
         res.status(200).json({ captainToken, captain });
     } catch (error) {
         res.status(400).json({ message: 'An error occurred', error: error.message });
@@ -136,7 +124,6 @@ module.exports.SendOtpForLogin = async(req, res, next) => {
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-
     const { email } = req.body;
     try {
         const captainExists = await captainModel.findOne({ email });
@@ -154,7 +141,6 @@ module.exports.SendOtpForLogin = async(req, res, next) => {
         await sendEmail(mailOptions);
         const expiresAt = new Date(Date.now() + 1 * 60 * 1000);
         await OTP.create({ email, otp, expiresAt });
-        res.cookie('email', email);
         return res.status(200).json({ message: 'OTP sent successfully' });
     } catch (error) {
         console.error(error);

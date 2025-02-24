@@ -7,7 +7,7 @@ const authMiddleware = require('../middlewares/auth.middleware');
 router.post('/signup', [
     body('email').isEmail().withMessage('Invalied email'),
 ], captainController.registerCaptain)
-router.get('/signup/send-otp',captainController.SendOTPForRegister);
+router.post('/signup/send-otp',captainController.SendOTPForRegister);
 router.post('/signup/verify-otp',captainController.VerifyOTP);
 router.post('/signup/complete-registration',[
     body('firstname').isLength({ min: 3 }).withMessage('First name must be at least 3 chaarcters long'),

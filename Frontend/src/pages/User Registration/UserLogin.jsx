@@ -10,21 +10,21 @@ const UserLogin = () => {
     const navigate = useNavigate();
 
     const SubmitHandler = async (e) => {
-    e.preventDefault();
-    try {
-        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, {
-            email,
-            password,
-        })
-        const { userToken } = response.data;
-        localStorage.setItem("userToken", userToken);
-        alert('Login successful!');
-        setUser(response.data.user);
-        navigate('/home');
-    } catch (err) {
-        alert(err.response?.data?.message || 'Error completing registration');
-    }
-};
+        e.preventDefault();
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, {
+                email,
+                password,
+            })
+            const { userToken } = response.data;
+            localStorage.setItem("userToken", userToken);
+            alert('Login successful!');
+            setUser(response.data.user);
+            navigate('/home');
+        } catch (err) {
+            alert(err.response?.data?.message || 'Error completing registration');
+        }
+    };
 
     return (
         <div className='p-7 h-screen flex flex-col justify-between'>

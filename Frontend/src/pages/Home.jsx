@@ -158,6 +158,10 @@ const Home = () => {
     }, [waitingForDriver])
 
     async function findTrip() {
+        if(!pickup || !destination){
+            alert('Please enter both pickup and destination');
+            return;
+        }
         setVehiclePanel(true)
         setPanelOpen(false)
 

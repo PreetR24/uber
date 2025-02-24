@@ -29,7 +29,7 @@ const UserSignup = () => {
     
     const SendOTPHandler = async (e) => {
         try {
-            await axios.get(`${import.meta.env.VITE_BASE_URL}/users/signup/send-otp`, { withCredentials: true });
+            await axios.post(`${import.meta.env.VITE_BASE_URL}/users/signup/send-otp`, { email }, { withCredentials: true });
             setsendotpbtn(true)
             alert('OTP sent successfully!');
         } catch (err) {
@@ -61,6 +61,7 @@ const UserSignup = () => {
         );
         const { userToken } = response.data;
         localStorage.setItem('userToken', userToken);
+        localStorage.removeItem('newemail');
         alert('Registration successful!');
         setUser({ firstName, lastName, email, password});
         navigate('/home');   

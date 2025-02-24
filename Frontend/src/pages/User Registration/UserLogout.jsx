@@ -7,13 +7,18 @@ const UserLogout = () => {
     const userToken = localStorage.getItem('userToken');
 
     useEffect(() => {
-        axios.get(`${import.meta.env.VITE_BASE_URL}/users/logout`, { headers: { Authorization: `Bearer ${userToken}` } })
-        .then((response) => {
-            if(response.status === 200){
-                localStorage.removeItem('userToken');
-                navigate('/login');
-            }
-        })
+        try{
+            axios.get(`${import.meta.env.VITE_BASE_URL}/users/logout`, { headers: { Authorization: `Bearer ${userToken}` } })
+            .then((response) => {
+                if(response.status === 200){
+                    localStorage.removeItem('userToken');
+                    navigate('/login');
+                }
+            })
+            alert("Logged out")
+        } catch (error) {
+            console.error(error)
+        }
     }, [navigate, userToken])
 
     return (
