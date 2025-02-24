@@ -40,7 +40,7 @@ const UserSignup = () => {
     const handleVerifyOtp = async (e) => {
         e.preventDefault();
         try {
-            await axios.post(`${import.meta.env.VITE_BASE_URL}/users/signup/verify-otp`, { otp }, { withCredentials: true });
+            await axios.post(`${import.meta.env.VITE_BASE_URL}/users/signup/verify-otp`, { email,otp }, { withCredentials: true });
             setVerified(true);
             alert('OTP verified successfully!');
         } catch (err) {

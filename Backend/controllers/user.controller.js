@@ -71,7 +71,7 @@ module.exports.EnterUserDetails = async(req, res, next) => {
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-    const { firstname, lastname, password, email } = req.body;
+    const { firstname, lastname, email, password } = req.body;
 
     const hashedPassword = await userModel.hashPassword(password);
 
