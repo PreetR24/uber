@@ -1,17 +1,22 @@
 import React from 'react'
+import { ChevronDown } from 'lucide-react';
 
 const ConfirmRide = (props) => {
     const vehicle = {
-        "car": "https://swyft.pl/wp-content/uploads/2023/05/how-many-people-can-a-uberx-take.jpg",
-        "motorbike": "https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_638,w_956/v1649231091/assets/2c/7fa194-c954-49b2-9c6d-a3b8601370f5/original/Uber_Moto_Orange_312x208_pixels_Mobile.png",
-        "auto": "https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_368,w_552/v1648431773/assets/1d/db8c56-0204-4ce4-81ce-56a11a07fe98/original/Uber_Auto_558x372_pixels_Desktop.png"
+        "car": "../src/images/car.jpg",
+        "motorbike": "../src/images/bike.png",
+        "auto": "../src/images/auto.png"
     }
 
     return (
-        <div>
-            <h5 className='p-1 text-center w-[93%] absolute top-0' onClick={() => {
-                props.setConfirmRidePanel(false)
-            }}><i className="text-3xl text-gray-500 cursor-pointer ri-arrow-down-wide-line"></i></h5>
+        <div className="bg-white rounded-t-xl shadow-lg p-6 relative">
+            <button 
+                className="absolute -top-2 left-0 right-0 mx-auto w-12 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
+                onClick={() => {props.setConfirmRidePanel(false)}}
+                aria-label="Close vehicle selection panel"
+            >
+                <ChevronDown size={30} />
+            </button>
             <h3 className='text-2xl font-semibold mb-5 text-center'>Confirm your Ride</h3>
 
             <div className='flex gap-2 justify-between flex-col items-center'>

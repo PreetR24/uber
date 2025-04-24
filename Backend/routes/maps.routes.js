@@ -15,6 +15,12 @@ router.post('/get-distance',
     authMiddleware.authUser, mapsController.getDistanceTime
 )
 
+router.get('/get-address',
+    query('lat').isFloat().withMessage('Latitude must be a float'),
+    query('lng').isFloat().withMessage('Longitude must be a float'),
+    authMiddleware.authUser, mapsController.getAddressFromCoordinates
+)
+
 router.get('/get-suggestions',
     query('input').isString().notEmpty().isLength({min: 3}),
     authMiddleware.authUser, mapsController.getAddressSuggestions

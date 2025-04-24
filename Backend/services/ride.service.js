@@ -1,4 +1,3 @@
-const { validationResult } = require('express-validator');
 const rideModel = require('../models/ride.model');
 const mapService = require('../services/maps.service');
 const crypto = require('crypto');

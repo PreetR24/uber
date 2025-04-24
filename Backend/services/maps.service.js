@@ -21,6 +21,26 @@ module.exports.getAddressCoordinates = async (address) => {
     }
 }
 
+module.exports.getAddressFromCoordinates = async (lat, lng) => {
+    const apiKey = process.env.MAP_API;
+    const url = `https://api.openrouteservice.org/geocode/reverse?api_key=${apiKey}&point.lat=${lat}&point.lon=${lng}&size=1`;
+
+    try {
+        const response = await axios.get(url);
+        const { features } = response.data;
+
+        if (!features || features.length === 0) {
+            return res.status(404).json({ message: 'No address found for the given coordinates' });
+        }
+
+        const address = features[0].properties.label;
+        return address;
+    } catch (error) {
+        console.error("Error fetching address from coordinates:", error.message);
+        return res.status(500).json({ message: 'Failed to fetch address' });
+    }
+};
+
 module.exports.getDistanceTime = async (start, end) => {
     if (!start || !end) {
         throw new Error('Start and end points are required');

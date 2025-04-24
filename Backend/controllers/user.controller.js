@@ -5,6 +5,26 @@ const blacklistTokenModel = require('../models/blacklistToken.model');
 const OTP = require('../models/otp');
 const { sendEmail } = require('../utils/sendEmail');
 
+module.exports.googleLogin = async(req, res) => {
+    const { email } = req.body;
+
+    try {
+        // Check if user exists in the database
+        const user = await userModel.findOne({ email });
+
+        if (user) {
+            // User exists, return success
+            const userToken = user.generateAuthToken();
+            res.status(200).json({ userExists: true, userToken, user });
+        } else {
+            // User does not exist
+            res.status(404).json({ userExists: false });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Error checking Google login', error });
+    }
+};
+
 module.exports.registerUser = async(req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

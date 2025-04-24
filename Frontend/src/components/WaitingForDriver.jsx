@@ -1,14 +1,28 @@
 import React from 'react'
+import carImage from '../images/car.jpg'
+import bikeImage from '../images/bike.png'
+import autoImage from '../images/auto.png'
 
 const WaitingForDriver = (props) => {
+    const vehicleImages = {
+        car: carImage,
+        motorbike: bikeImage,
+        auto: autoImage
+    };
+
+    // Get vehicle image based on type
+    const getVehicleImage = (type) => {
+        return vehicleImages[type] || carImage; // fallback to car if type not found
+    };
+
     return (
         <div>
-        <h5 className='p-1 text-center w-[93%] absolute top-0' onClick={() => {
-            props.waitingForDriver(false)
-        }}><i className="text-3xl text-gray-200 ri-arrow-down-wide-line"></i></h5>
+        <h5 className='p-1 text-center w-[93%] absolute top-0 cursor-pointer' onClick={() => {
+            props.setWaitingForDriver(false)
+        }}><i className="text-3xl text-gray-500 ri-arrow-down-wide-line"></i></h5>
 
         <div className='flex items-center justify-between'>
-            <img className='h-12' src="https://swyft.pl/wp-content/uploads/2023/05/how-many-people-can-a-uberx-take.jpg" alt="" />
+            <img className='h-12' src={getVehicleImage(props.ride?.captain.vehicle.vehicleType)} alt="" />
             <div className='text-right'>
             <h2 className='text-lg font-medium capitalize'>{props.ride?.captain.fullname.firstname}</h2>
             <h4 className='text-xl font-semibold -mt-1 -mb-1'>{props.ride?.captain.vehicle.plate}</h4>

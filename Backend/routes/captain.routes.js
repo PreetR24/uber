@@ -27,6 +27,8 @@ router.post('/login/send-otp',captainController.SendOtpForLogin);
 router.post('/login/verify-otp',captainController.VerifyOTP);
 router.post('/login/set-psd',captainController.SetPassword);
 
+router.post('/google-login', captainController.googleLogin);
+
 router.get('/profile',authMiddleware.authCaptain, captainController.getCaptainProfile);
 router.get('/logout', authMiddleware.authCaptain, captainController.logoutCaptain);
 

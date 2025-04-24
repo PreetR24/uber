@@ -5,6 +5,30 @@ const blacklistTokenModel = require('../models/blacklistToken.model');
 const OTP = require('../models/otp');
 const { sendEmail } = require('../utils/sendEmail');
 
+const { OAuth2Client } = require('google-auth-library');
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+module.exports.googleLogin = async(req, res) => {
+    const { email } = req.body;
+
+    try {
+        // Check if captain exists in the database
+        const captain = await captainModel.findOne({ email });
+
+        if (captain) {
+            // captain exists, return success
+            const captainToken = captain.generateAuthToken();
+            res.status(200).json({ captainExists: true, captainToken, captain });
+        } else {
+            // captain does not exist
+            res.status(404).json({ captainExists: false });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Error checking Google login', error });
+    }
+};
+
 module.exports.registerCaptain = async(req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -151,7 +175,7 @@ module.exports.SendOtpForLogin = async(req, res, next) => {
 module.exports.SetPassword = async(req, res, next) => {
     const { email, password } = req.body;
     try {
-        const captain = await captainModel.findOne({ email });  // Find user by email
+        const captain = await captainModel.findOne({ email });  // Find captain by email
         if (!captain) {
             return res.status(404).json({ message: "Captain not found" });
         }

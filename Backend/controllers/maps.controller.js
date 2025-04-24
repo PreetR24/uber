@@ -63,6 +63,22 @@ module.exports.getDistanceTime = async (req, res) => {
     }
 };
 
+module.exports.getAddressFromCoordinates = async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const { lat, lng } = req.query;
+        const address = await mapService.getAddressFromCoordinates(lat, lng);
+        res.status(200).json({ address });
+    } catch (error) {
+        console.error("Error occurred while fetching address from coordinates:", error.message);
+        res.status(500).json({ message: "An unexpected error occurred while fetching address from coordinates." });
+    }
+};
+
 module.exports.getAddressSuggestions = async (req, res) => {
     try{
         const errors = validationResult(req);

@@ -23,6 +23,8 @@ router.post('/login/send-otp',userController.SendOtpForLogin);
 router.post('/login/verify-otp',userController.VerifyOTP);
 router.post('/login/set-psd',userController.SetPassword);
 
+router.post('/google-login', userController.googleLogin);
+
 router.get('/profile',authMiddleware.authUser, userController.getUserProfile);
 router.get('/logout',authMiddleware.authUser, userController.logoutUser);
 
